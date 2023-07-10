@@ -11,12 +11,40 @@ class Array
     def my_select(&block)
         array = []
         self.my_each do |ele|
-            if block.call(ele) == true 
+            if block.call(ele)
                 array << ele 
             end 
         end 
         return array 
     end 
+
+    def my_reject(&block)
+        array = []
+        self.my_each do |ele|
+            if !block.call(ele)
+                array << ele 
+            end 
+        end 
+        return array 
+    end 
+
+    def my_any?(&block)
+        self.my_each do |ele|
+            if block.call(ele)
+                return true
+            end
+        end
+        false
+    end
+
+    def my_all?(&block)
+        self.my_each do |ele|
+            if !block.call(ele)
+                return false
+            end
+        end
+        true
+    end
 end 
 
 # return_value = [1, 2, 3].my_each do |num|
@@ -37,4 +65,12 @@ end
 # p a.my_select { |num| num > 1 } # => [2, 3]
 # p a.my_select { |num| num == 4 } # => []
 
-# 
+# a = [1, 2, 3]
+# p a.my_reject { |num| num > 1 } # => [1]
+# p a.my_reject { |num| num == 4 } # => [1, 2, 3]
+
+a = [1, 2, 3]
+p a.my_any? { |num| num > 1 } # => true
+p a.my_any? { |num| num == 4 } # => false
+p a.my_all? { |num| num > 1 } # => false
+p a.my_all? { |num| num < 4 } # => true
